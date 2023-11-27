@@ -1,0 +1,25 @@
+{
+  "name": "cat-shop-node-server-app",
+  "version": "1.0.0",
+  "description": "Node.js HTTP Web server for cat shop application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feiergu/cat-shop-node-server-app.git"
+  },
+  "keywords": [
+    "Node",
+    "REST",
+    "Server",
+    "HTTP"
+  ],
+  "author": "Team cat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/feiergu/cat-shop-node-server-app/issues"
+  },
+  "homepage": "https://github.com/feiergu/cat-shop-node-server-app#readme"
+}

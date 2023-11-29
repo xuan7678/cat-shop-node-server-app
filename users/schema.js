@@ -10,7 +10,17 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["BUYER", "SELLER", "ADMIN"],
+      required: true,
       default: "BUYER",
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
     },
   },
   { collection: "users" }

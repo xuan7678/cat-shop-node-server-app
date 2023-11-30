@@ -2,14 +2,16 @@ import path from "path";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import userRoutes from './users/userRoutes.js';
 import ProductRoutes from "./products/routes.js";
 import OrderRoutes from "./orders/routes.js";
 import UploadRoutes from "./upload/routes.js";
 
-mongoose.connect("mongodb://localhost:27017/catShop");
+mongoose.connect("mongodb://127.0.0.1:27017/catShop");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api/users', userRoutes);
 ProductRoutes(app);
 OrderRoutes(app);
 UploadRoutes(app);

@@ -9,7 +9,7 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-        generateToken(res, user.userName);
+        generateToken(res, user._id);
 
         res.json({
             name: user.username,
@@ -31,7 +31,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { userName, email, password, firstName, lastName, role } = req.body;
+    const { username, email, password, firstName, lastName, role } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        userName,
+        username,
         firstName,
         lastName,
         email,
@@ -51,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     if (user) {
-        generateToken(res, user.userName);
+        generateToken(res, user._id);
 
         res.status(201).json({
             _id: user._id,
@@ -88,11 +88,12 @@ const logoutUser = (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findOne(req.user.userName);
+    const user = await User.findOne(req.user._id);
 
     if (user) {
         res.json({
-            userName: user.userName,
+            id: user._id,
+            userName: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -103,6 +104,27 @@ const getUserProfile = asyncHandler(async (req, res) => {
         throw new Error('User not found');
     }
 });
+
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+const getOtherUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findOne(req.params.id);
+    if (user) {
+        res.json({
+            id: user._id,
+            userName: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -122,7 +144,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         const updatedUser = await user.save();
 
         res.json({
-            userName: updatedUser.userName,
+            id: updatedUser._id,
+            username: updatedUser.username,
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
             email: updatedUser.email,
@@ -134,11 +157,56 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Delete user
+// @route   DELETE /api/users/:id
+// @access  Private/Admin
+const deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (user) {
+        if (user.isAdmin) {
+            res.status(400);
+            throw new Error('Can not delete admin user');
+        }
+        await User.deleteOne({ _id: user._id });
+        res.json({ message: 'User removed' });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+
+// find users by admin id
+const findUsers = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user.isAdmin) {
+        res.status(400);
+        throw new Error('user is not admin');
+    }
+
+    const users = await User.find({ admin: user._id})
+
+    res.json(users.map(u => {
+       return {
+           id: u._id,
+           username: u.username,
+           firstName: u.firstName,
+           lastName: u.lastName,
+           email: u.email,
+           isAdmin: u.isAdmin,
+       }
+    }));
+});
+
 export {
     authUser,
     registerUser,
     logoutUser,
     getUsers,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    deleteUser,
+    findUsers,
+    getOtherUserProfile
 };

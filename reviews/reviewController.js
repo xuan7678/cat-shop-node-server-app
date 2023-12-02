@@ -1,6 +1,6 @@
-import asyncHandler from "../middleware/asyncHandler";
+import asyncHandler from "../middleware/asyncHandler.js";
 import Review from "./schema.js";
-import User from "../users/schema";
+import User from "../users/schema.js";
 
 const getReviews = asyncHandler(async (req, res) => {
     const reviews = await Review.find({});

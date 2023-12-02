@@ -1,6 +1,7 @@
 import User from './schema.js';
 import asyncHandler from '../middleware/asyncHandler.js'
 import generateToken from "./generateToken.js";
+import { ObjectId } from "mongodb";
 
 // log in
 const authUser = asyncHandler(async (req, res) => {
@@ -31,7 +32,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { username, email, password, firstName, lastName, role } = req.body;
+    const { username, email, password, firstName, lastName, role, admin } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -47,7 +48,8 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         password,
         isAdmin: false,
-        role
+        role,
+        admin: admin ? new ObjectId(admin) : null,
     });
 
     if (user) {
@@ -98,6 +100,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
             lastName: user.lastName,
             email: user.email,
             isAdmin: user.isAdmin,
+            role: user.role,
+            admin: user.admin,
         });
     } else {
         res.status(404);
@@ -118,6 +122,8 @@ const getOtherUserProfile = asyncHandler(async (req, res) => {
             lastName: user.lastName,
             email: user.email,
             isAdmin: user.isAdmin,
+            role: user.role,
+            admin: user.admin,
         });
     } else {
         res.status(404);
@@ -136,9 +142,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.firstName = req.body.firstName || user.firstName;
         user.lastName = req.body.lastName || user.lastName;
         user.email = req.body.email || user.email;
+        user.role = req.body.role || user.role;
 
         if (req.body.password) {
             user.password = req.body.password;
+        }
+
+        if (req.body.admin) {
+            user.admin = new ObjectId(req.body.admin);
         }
 
         const updatedUser = await user.save();
@@ -150,6 +161,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             lastName: updatedUser.lastName,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
+            role: user.role,
+            admin: user.admin,
         });
     } else {
         res.status(404);
@@ -195,6 +208,8 @@ const findUsers = asyncHandler(async (req, res) => {
            lastName: u.lastName,
            email: u.email,
            isAdmin: u.isAdmin,
+           role: u.role,
+           admin: u.admin,
        }
     }));
 });

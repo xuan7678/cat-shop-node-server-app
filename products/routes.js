@@ -26,8 +26,8 @@ function ProductRoutes(app) {
     const productId = req.params.productId;
     const product = await dao.findProductById(productId);
     if (!product) {
-      res.sendStatus(404);
-      throw new Error("Product not found");
+      res.status(404).json({ message: "Product not found" });
+      return;
     }
     await dao.deleteProduct(productId);
     res.json({ message: "Product removed" });

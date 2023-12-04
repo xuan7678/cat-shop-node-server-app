@@ -13,6 +13,7 @@ const authUser = asyncHandler(async (req, res) => {
         generateToken(res, user._id);
 
         res.json({
+            _id: user._id,
             name: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -94,7 +95,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
     if (user) {
         res.json({
-            id: user._id,
+            _id: user._id,
             userName: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -116,7 +117,7 @@ const getOtherUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findOne(req.params.id);
     if (user) {
         res.json({
-            id: user._id,
+            _id: user._id,
             userName: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -155,7 +156,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         const updatedUser = await user.save();
 
         res.json({
-            id: updatedUser._id,
+            _id: updatedUser._id,
             username: updatedUser.username,
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
@@ -202,7 +203,7 @@ const findUsers = asyncHandler(async (req, res) => {
 
     res.json(users.map(u => {
        return {
-           id: u._id,
+           _id: u._id,
            username: u.username,
            firstName: u.firstName,
            lastName: u.lastName,

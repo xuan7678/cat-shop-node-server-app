@@ -13,7 +13,7 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
     productTitle: { type: String, required: true },
-    productImage: { type: String, required: true },
+    productImage: { type: String },
     comment: { type: String, required: true },
   },
   { collection: "reviews" }

@@ -2,17 +2,23 @@ import path from "path";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import cookieParser from 'cookie-parser';
-import userRoutes from './users/userRoutes.js';
-import profileRoutes from './users/profileRoutes.js';
-import reviewRoutes from './reviews/reviewRoutes.js';
+import cookieParser from "cookie-parser";
+import userRoutes from "./users/userRoutes.js";
+import profileRoutes from "./users/profileRoutes.js";
+import reviewRoutes from "./reviews/reviewRoutes.js";
 import ProductRoutes from "./products/routes.js";
 import OrderRoutes from "./orders/routes.js";
 import UploadRoutes from "./upload/routes.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-mongoose.connect("mongodb://127.0.0.1:27017/catShop");
+const CONNECTION_STRING =
+  process.env.DB_CONNECTION_STRING_TEAMCAT ||
+  "mongodb://127.0.0.1:27017/catShop";
+mongoose.connect(CONNECTION_STRING, {
+  useNewUrlParser: true,
+  dbName: "catShop",
+});
 const app = express();
 app.use(cookieParser());
 app.use(cors());
@@ -20,9 +26,9 @@ app.use(express.json());
 ProductRoutes(app);
 OrderRoutes(app);
 UploadRoutes(app);
-app.use('/api/users', userRoutes);
-app.use('/api/profile', profileRoutes)
-app.use('/api/reviews', reviewRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/reviews", reviewRoutes);
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
   app.use("/uploads", express.static("/var/data/uploads"));

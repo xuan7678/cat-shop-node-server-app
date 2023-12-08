@@ -8,3 +8,4 @@ export const updateProduct = (productId, product) =>
 export const deleteProduct = (productId) => model.deleteOne({ _id: productId });
 export const findProductsByKeyword = (keyword) =>
   model.find({ title: { $regex: new RegExp(keyword, "i") } });
+export const findAllProducts = () => model.find({});

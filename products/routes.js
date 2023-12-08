@@ -38,8 +38,13 @@ function ProductRoutes(app) {
     const result = await dao.findProductsByKeyword(keyword);
     res.json(result);
   };
+  const findAllProducts = async (req, res) => {
+    const result = await dao.findAllProducts();
+    res.json(result);
+  };
 
   app.post("/api/products", createProduct);
+  app.get("/api/products", findAllProducts);
   app.get("/api/profile/:userId/products", findAllProductsBySeller);
   app.get("/api/products/:productId", findProductById);
   app.put("/api/products/:productId", updateProduct);

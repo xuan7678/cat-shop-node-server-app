@@ -12,16 +12,15 @@ import UploadRoutes from "./upload/routes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const CONNECTION_STRING =
-  process.env.DB_CONNECTION_STRING_TEAMCAT ||
-  "mongodb://127.0.0.1:27017/catShop";
-mongoose.connect(CONNECTION_STRING, {
-  useNewUrlParser: true,
-  dbName: "catShop",
-});
+mongoose.connect("mongodb://localhost:27017/catShop");
 const app = express();
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with the domain you want to allow
+  credentials: true
+}
+
+));
 app.use(express.json());
 ProductRoutes(app);
 OrderRoutes(app);
@@ -40,4 +39,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(process.env.PORT || 4000);
+app.listen(process.env.PORT || 8888);

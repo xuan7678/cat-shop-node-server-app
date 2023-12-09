@@ -8,7 +8,6 @@ const router = express.Router();
 router
     .route('/')
     .get(protect, getUserProfile)
-    .put(protect, updateUserProfile);
 
 router
     .route('/:id/users')
@@ -21,5 +20,6 @@ router
 router
     .route('/:id')
     .get(protect, admin, getOtherUserProfile)
+    .put(protect, updateUserProfile);
 
 export default router;

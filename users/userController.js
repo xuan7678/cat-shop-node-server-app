@@ -14,7 +14,7 @@ const authUser = asyncHandler(async (req, res) => {
 
         res.json({
             _id: user._id,
-            name: user.username,
+            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -114,17 +114,17 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getOtherUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findOne(req.params.id);
+    const user = await User.findById(req.params.id);
     if (user) {
         res.json({
             _id: user._id,
             userName: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            isAdmin: user.isAdmin,
+            // firstName: user.firstName,
+            // lastName: user.lastName,
+            // email: user.email,
+            // isAdmin: user.isAdmin,
             role: user.role,
-            admin: user.admin,
+            // admin: user.admin,
         });
     } else {
         res.status(404);
@@ -193,25 +193,25 @@ const deleteUser = asyncHandler(async (req, res) => {
 // find users by admin id
 const findUsers = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
-
     if (!user.isAdmin) {
         res.status(400);
         throw new Error('user is not admin');
     }
 
-    const users = await User.find({ admin: user._id})
+    const users = await User.find({ admin: user._id });
+
 
     res.json(users.map(u => {
-       return {
-           _id: u._id,
-           username: u.username,
-           firstName: u.firstName,
-           lastName: u.lastName,
-           email: u.email,
-           isAdmin: u.isAdmin,
-           role: u.role,
-           admin: u.admin,
-       }
+        return {
+            _id: u._id,
+            username: u.username,
+            firstName: u.firstName,
+            lastName: u.lastName,
+            email: u.email,
+            isAdmin: u.isAdmin,
+            role: u.role,
+            admin: u.admin,
+        }
     }));
 });
 

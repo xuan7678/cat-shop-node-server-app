@@ -31,14 +31,15 @@ const createReview = asyncHandler(async (req, res) => {
 
 const getReviewsForUser = asyncHandler(async (req, res) => {
     const user = req.user;
-    const reviews = await Review.find({user: user._id});
+    const reviews = await Review.find({ user: user._id });
     res.json(reviews);
 });
 
 const getReviewsByProductId = asyncHandler(async (req, res) => {
-   const productId = req.params.productId;
-   const reviews = await Review.find({product: new ObjectId(productId)});
-   res.json(reviews);
+    const productId = req.params.productId;
+    //const reviews = await Review.find({product: new ObjectId(productId)});
+    const reviews = await Review.find({ product: productId });
+    res.json(reviews);
 });
 
 export {

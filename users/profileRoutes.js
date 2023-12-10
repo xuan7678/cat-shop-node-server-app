@@ -19,7 +19,7 @@ router
 
 router
     .route('/:id')
-    .get(protect, admin, getOtherUserProfile)
+    .get(protect, getOtherUserProfile)
     .put(protect, updateUserProfile);
 
 export default router;

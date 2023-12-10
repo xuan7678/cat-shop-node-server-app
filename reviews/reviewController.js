@@ -1,6 +1,7 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Review from "./schema.js";
 import User from "../users/schema.js";
+import Product from "../products/model.js";
 import { ObjectId } from "mongodb";
 
 const getReviews = asyncHandler(async (req, res) => {
@@ -8,16 +9,16 @@ const getReviews = asyncHandler(async (req, res) => {
     res.json(reviews);
 });
 
-
 const createReview = asyncHandler(async (req, res) => {
-    const {productTitle, productImage, comment, product} = req.body;
+    const { comment, productId } = req.body;
     const user = await User.findById(req.user._id);
+    const product = await Product.findById(productId);
     const review = await Review.create({
-        productTitle,
-        productImage,
+        productTitle: product.title,
+        productImage: product.image,
         comment,
         user: user._id,
-        product: new ObjectId(product)
+        product: product._id,
     });
 
     if (review) {

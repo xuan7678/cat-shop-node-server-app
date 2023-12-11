@@ -30,8 +30,8 @@ const createReview = asyncHandler(async (req, res) => {
 });
 
 const getReviewsByUserId = asyncHandler(async (req, res) => {
-    const userId  = req.params.id;
-    const reviews = await Review.find({ user: new ObjectId(userId) });
+    const user = req.user;
+    const reviews = await Review.find({ user: user._id});
     res.json(reviews);
 });
 

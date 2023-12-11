@@ -29,9 +29,9 @@ const createReview = asyncHandler(async (req, res) => {
     }
 });
 
-const getReviewsForUser = asyncHandler(async (req, res) => {
-    const user = req.user;
-    const reviews = await Review.find({ user: user._id });
+const getReviewsByUserId = asyncHandler(async (req, res) => {
+    const { userId } = req.body;
+    const reviews = await Review.find({ userId });
     res.json(reviews);
 });
 
@@ -45,6 +45,6 @@ const getReviewsByProductId = asyncHandler(async (req, res) => {
 export {
     getReviews,
     createReview,
-    getReviewsForUser,
+    getReviewsByUserId,
     getReviewsByProductId,
 }

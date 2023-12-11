@@ -1,6 +1,6 @@
 import express from 'express';
 import { getUserProfile, updateUserProfile, findUsers, getOtherUserProfile } from './userController.js'
-import { getReviewsForUser } from '../reviews/reviewController.js'
+import { getReviewsByUserId } from '../reviews/reviewController.js'
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router
 
 router
     .route('/:id/reviews')
-    .get(protect, getReviewsForUser)
+    .get(protect, getReviewsByUserId)
 
 router
     .route('/:id')

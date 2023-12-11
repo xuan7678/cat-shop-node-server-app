@@ -14,7 +14,7 @@ router
     .get(protect, admin, findUsers)
 
 router
-    .route('/:id/reviews')
+    .route('/reviews')
     .get(protect, getReviewsByUserId)
 
 router

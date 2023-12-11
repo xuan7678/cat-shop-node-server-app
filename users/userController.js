@@ -58,9 +58,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
         res.status(201).json({
             _id: user._id,
-            name: user.name,
+            name: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
+            role: user.role,
+            firstName: user.firstName,
+            lastName: user.lastName,
         });
     } else {
         res.status(400);

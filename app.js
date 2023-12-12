@@ -12,7 +12,7 @@ import UploadRoutes from "./upload/routes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-// mongoose.connect("mongodb://localhost:27017/catShop");
+//  mongoose.connect("mongodb://localhost:27017/catShop");
 const CONNECTION_STRING =
   process.env.DB_CONNECTION_STRING_TEAMCAT ||
   "mongodb://127.0.0.1:27017/catShop";

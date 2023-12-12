@@ -9,6 +9,7 @@ const generateToken = (res, userId) => {
   res.cookie('jwt', token, {
     httpOnly: true,
     domain: process.env.BACK_END_DOMAIN || 'localhost',
+    sameSite: 'None',
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
